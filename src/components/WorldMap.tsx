@@ -1,3 +1,4 @@
+// src/components/WorldMap.tsx
 import React, { useEffect, useState } from 'react';
 import { ComposableMap, Geographies, Geography, Marker } from 'react-simple-maps';
 import { feature } from 'topojson-client';
@@ -22,6 +23,7 @@ const WorldMap: React.FC<WorldMapProps> = ({ onSelectZone, zones }) => {
     .center([0, 20])
     .translate([viewWidth / 2, viewHeight / 2]);
 
+  // 加载 topojson
   useEffect(() => {
     const geo = feature(
       worldData as any,
@@ -30,23 +32,29 @@ const WorldMap: React.FC<WorldMapProps> = ({ onSelectZone, zones }) => {
     setFeatures(geo);
   }, []);
 
+  // 更新时间
   useEffect(() => {
-    const id = setInterval(() => setNow(new Date()), 1000);
-    return () => clearInterval(id);
+    const timer = setInterval(() => setNow(new Date()), 1000);
+    return () => clearInterval(timer);
   }, []);
 
+  // 重叠检测参数
   const thresholdPx = 30;
   const baseOffset = -22;
   const deltaY = 16;
 
+  // 计算每个时区在 SVG 上的像素位置，并安全解构
   const zonePoints = zones.map(zone => {
     const city = cityCoords[zone];
     const coords = city?.coordinates ?? [0, 0];
     const [lng, lat] = coords;
-    const [x, y] = projection([lng, lat]);
+    // projection 可能返回 null，必须处理
+    const proj = projection([lng, lat]) ?? [0, 0];
+    const [x, y] = proj;
     return { zone, lng, lat, x, y };
   });
 
+  // 为重叠标签计算垂直偏移
   const labelOffsets: Record<string, number> = {};
   zonePoints.forEach((pt, i) => {
     let overlapCount = 0;
