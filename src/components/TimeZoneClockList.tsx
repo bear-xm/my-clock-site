@@ -113,7 +113,7 @@ const TimeZoneClockList: React.FC<TimeZoneClockListProps> = ({
         {zones.map(zone => (
           <div
             key={zone}
-            ref={el => (zoneRefs.current[zone] = el)}
+            ref={(el) => { zoneRefs.current[zone] = el; }}
             className={`
               flex justify-between items-center
               bg-gray-100 dark:bg-gray-700
