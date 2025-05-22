@@ -1,19 +1,35 @@
 // src/App.tsx
 import React, { useState, useEffect } from 'react';
-// … 其他 imports …
+import ThemeSwitcher from './components/ThemeSwitcher';
+import Clock from './components/Clock';
+import TimeZoneClockList from './components/TimeZoneClockList';
+import WorldMap from './components/WorldMap';
+import PopularCityGrid from './components/PopularCityGrid';
 
 function App() {
-  const [selectedZone, setSelectedZone] = useState<string | null>(null);
+  // 1. 初始化：优先从 localStorage 读，没有再用默认 ['Asia/Shanghai']
   const [zoneList, setZoneList] = useState<string[]>(() => {
-    const saved = localStorage.getItem('tz-zones');
-    return saved ? JSON.parse(saved) : ['Asia/Shanghai'];
+    try {
+      const saved = localStorage.getItem('tz-zones');
+      return saved ? JSON.parse(saved) as string[] : ['Asia/Shanghai'];
+    } catch {
+      return ['Asia/Shanghai'];
+    }
   });
 
-  // ← 新增：当 zoneList 变化时写入 localStorage
+  const [selectedZone, setSelectedZone] = useState<string | null>(null);
+
+  // 2. 任何 zoneList 变动，都写回 localStorage
   useEffect(() => {
-    localStorage.setItem('tz-zones', JSON.stringify(zoneList));
+    try {
+      localStorage.setItem('tz-zones', JSON.stringify(zoneList));
+    } catch {
+      // 如果禁用了 localStorage，可以在这里做降级处理
+      console.warn('无法写入 localStorage');
+    }
   }, [zoneList]);
 
+  // 3. 地图点击添加
   const handleCityClick = (zoneId: string) => {
     setSelectedZone(zoneId);
     setZoneList(prev => {
@@ -26,14 +42,14 @@ function App() {
 
   return (
     <div className="bg-gray-100 dark:bg-gray-900 min-h-screen">
-      {/* 地图全屏区域 */}
+      {/* 地图：全屏 */}
       <div className="w-full h-screen">
         <WorldMap zones={zoneList} onSelectZone={setSelectedZone} />
       </div>
 
-      {/* 下方功能区 */}
+      {/* 下方功能区：限宽居中 */}
       <div className="w-full max-w-screen-xl mx-auto px-4 py-8">
-        <div className="w-full flex justify-end mb-4">
+        <div className="flex justify-end mb-4">
           <ThemeSwitcher />
         </div>
 
@@ -45,7 +61,7 @@ function App() {
           <TimeZoneClockList
             selectedZone={selectedZone}
             zones={zoneList}
-            setZones={setZoneList}   // 仍然用这个 setter
+            setZones={setZoneList}  // 传入同一个 setter！
           />
         </div>
 
