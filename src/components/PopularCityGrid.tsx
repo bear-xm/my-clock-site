@@ -7,14 +7,14 @@ interface PopularCityGridProps {
 }
 
 const popularZones: string[] = [
-  'Asia/Shanghai',
+  'America/Los_Angeles',
   'Asia/Tokyo',
   'Europe/London',
-  'Europe/Paris',
   'America/New_York',
-  'America/Los_Angeles',
+  'Europe/Tallinn',
+  'Asia/Dubai',
   'Australia/Sydney',
-  'Africa/Johannesburg',
+  'America/Sao_Paulo',
 ];
 
 const PopularCityGrid: React.FC<PopularCityGridProps> = ({ onCityClick }) => {
