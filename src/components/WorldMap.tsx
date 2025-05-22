@@ -71,7 +71,6 @@ const WorldMap: React.FC<WorldMapProps> = ({ onSelectZone, zones }) => {
         preserveAspectRatio="xMidYMid meet"
         className="w-full h-full"
       >
-        {/* 地图底图 */}
         <Geographies geography={features}>
           {({ geographies }: { geographies: any[] }) =>
             geographies.map((geo: any) => (
@@ -84,7 +83,6 @@ const WorldMap: React.FC<WorldMapProps> = ({ onSelectZone, zones }) => {
           }
         </Geographies>
 
-        {/* 城市标签 */}
         {zonePoints.map(({ zone, lng, lat }) => {
           const city = cityCoords[zone];
           const cityName = city?.name ?? zone.split('/').pop()!.replace(/_/g, ' ');
