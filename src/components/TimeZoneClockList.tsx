@@ -1,4 +1,3 @@
-// src/components/TimeZoneClockList.tsx
 import React, { useState, useEffect, useRef } from 'react';
 
 export interface TimeZoneClockListProps {
@@ -8,7 +7,7 @@ export interface TimeZoneClockListProps {
 }
 
 const staticNames: Record<string, string> = {
-  // — 亚洲 —
+  // 亚洲
   'Asia/Tokyo': '东京',
   'Asia/Shanghai': '上海',
   'Asia/Beijing': '北京',
@@ -26,7 +25,7 @@ const staticNames: Record<string, string> = {
   'Asia/Dubai': '迪拜',
   'Asia/Tel_Aviv': '特拉维夫',
   'Asia/Tehran': '德黑兰',
-  // — 欧洲 —
+  // 欧洲
   'Europe/London': '伦敦',
   'Europe/Paris': '巴黎',
   'Europe/Berlin': '柏林',
@@ -38,7 +37,7 @@ const staticNames: Record<string, string> = {
   'Europe/Zurich': '苏黎世',
   'Europe/Stockholm': '斯德哥尔摩',
   'Europe/Tallinn': '马尔杜',
-  // — 北美 —
+  // 北美
   'America/New_York': '纽约',
   'America/Toronto': '多伦多',
   'America/Vancouver': '温哥华',
@@ -49,15 +48,15 @@ const staticNames: Record<string, string> = {
   'America/Phoenix': '凤凰城',
   'America/Anchorage': '安克雷奇',
   'Pacific/Honolulu': '檀香山',
-  // — 南美 —
+  // 南美
   'America/Sao_Paulo': '圣保罗',
   'America/Argentina/Buenos_Aires': '布宜诺斯艾利斯',
-  // — 非洲 —
+  // 非洲
   'Africa/Cairo': '开罗',
   'Africa/Johannesburg': '约翰内斯堡',
   'Africa/Nairobi': '内罗毕',
   'Africa/Lagos': '拉各斯',
-  // — 大洋洲 —
+  // 大洋洲
   'Australia/Sydney': '悉尼',
   'Australia/Melbourne': '墨尔本',
   'Pacific/Auckland': '奥克兰',
@@ -85,7 +84,10 @@ const TimeZoneClockList: React.FC<TimeZoneClockListProps> = ({
 
   useEffect(() => {
     if (selectedZone && refs.current[selectedZone]) {
-      refs.current[selectedZone]!.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      refs.current[selectedZone]!.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+      });
     }
   }, [selectedZone]);
 
@@ -116,6 +118,7 @@ const TimeZoneClockList: React.FC<TimeZoneClockListProps> = ({
       <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">
         多时区时钟
       </h2>
+
       <div className="flex mb-2">
         <input
           list="tz-list"
@@ -134,22 +137,33 @@ const TimeZoneClockList: React.FC<TimeZoneClockListProps> = ({
           添加
         </button>
       </div>
-      {error && <p className="text-red-500 dark:text-red-400 mb-2">{error}</p>}
+
+      {error && (
+        <p className="text-red-500 dark:text-red-400 mb-2">{error}</p>
+      )}
+
       <datalist id="tz-list">
         {Object.entries(staticNames).map(([id, name]) => (
           <option key={id} value={name} />
         ))}
       </datalist>
+
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
         {zones.map((z) => (
           <div
             key={z}
-            ref={(el) => (refs.current[z] = el)}
+            ref={(el) => {
+              refs.current[z] = el;
+            }}  // ← 这里用了块体，不返回 el
             className={`flex justify-between items-center bg-gray-100 dark:bg-gray-700 p-3 rounded transition ${
-              selectedZone === z ? 'ring-2 ring-yellow-400 dark:ring-yellow-600' : ''
+              selectedZone === z
+                ? 'ring-2 ring-yellow-400 dark:ring-yellow-600'
+                : ''
             }`}
           >
-            <span className="text-gray-900 dark:text-gray-100">{deriveCityLabel(z)}</span>
+            <span className="text-gray-900 dark:text-gray-100">
+              {deriveCityLabel(z)}
+            </span>
             <span className="text-gray-900 dark:text-gray-100">
               {now.toLocaleTimeString(undefined, { timeZone: z })}
             </span>
