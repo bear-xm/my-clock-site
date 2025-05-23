@@ -11,10 +11,14 @@
   },
   "dependencies": {
     "d3-geo": "^3.1.1",
+    "downshift": "^9.0.9",
     "prop-types": "^15.8.1",
     "react": "^18.3.1",
+    "react-beautiful-dnd": "^13.1.1",
+    "react-color": "^2.19.3",
     "react-dom": "^18.3.1",
     "react-simple-maps": "^3.0.0",
+    "react-swipeable": "^7.0.2",
     "topojson-client": "^3.1.0"
   },
   "devDependencies": {
@@ -22,7 +26,9 @@
     "@types/d3-geo": "^3.1.0",
     "@types/node": "^22.15.21",
     "@types/react": "^19.1.2",
+    "@types/react-beautiful-dnd": "^13.1.8",
     "@types/react-dom": "^19.1.2",
+    "@types/react-swipeable": "^4.3.0",
     "@vitejs/plugin-react": "^4.4.1",
     "autoprefixer": "^10.4.21",
     "eslint": "^9.25.0",
