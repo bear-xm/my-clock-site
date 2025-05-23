@@ -1,7 +1,7 @@
 // src/App.tsx
 import React, { useState, useEffect } from 'react';
 import { ThemeProvider } from './contexts/ThemeContext';
-import ThemePicker from './components/ThemePicker';
+import ThemeSwitcher from './components/ThemeSwitcher';
 import Clock from './components/Clock';
 import TimeZoneClockList from './components/TimeZoneClockList';
 import WorldMap from './components/WorldMap';
@@ -20,23 +20,19 @@ function App() {
 
   const handleCityClick = (zoneId: string) => {
     setSelectedZone(zoneId);
-    setZoneList((prev) =>
-      prev.includes(zoneId) ? prev : [...prev, zoneId]
-    );
+    setZoneList((prev) => (prev.includes(zoneId) ? prev : [...prev, zoneId]));
   };
 
   return (
     <ThemeProvider>
       <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
-        {/* 地图 */}
         <div className="w-full h-screen">
           <WorldMap zones={zoneList} onSelectZone={setSelectedZone} />
         </div>
 
-        {/* 功能区 */}
         <div className="w-full max-w-screen-xl mx-auto px-4 py-8">
           <div className="flex justify-end mb-4">
-            <ThemePicker />
+            <ThemeSwitcher />
           </div>
           <div className="text-center mb-8">
             <Clock />
