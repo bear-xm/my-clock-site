@@ -1,7 +1,6 @@
-import ThemePicker from './components/ThemePicker';
+import React from 'react';
+import ThemePicker from './ThemePicker';
 
-// ...
+const ThemeSwitcher: React.FC = () => <ThemePicker />;
 
-<div className="flex justify-end mb-4">
-  <ThemePicker />
-</div>
+export default ThemeSwitcher;
