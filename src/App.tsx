@@ -1,40 +1,40 @@
-// src/App.js
+// src/App.tsx
 import React, { useState, useEffect } from 'react';
 import Clock from './components/Clock';
 import TimeZoneClockList from './components/TimeZoneClockList';
 import WorldMap from './components/WorldMap';
 import PopularCityGrid from './components/PopularCityGrid';
 
-function App() {
-  // 从 localStorage 读取已保存的时区列表
-  const [zoneList, setZoneList] = useState(() => {
+const App: React.FC = () => {
+  // 从 localStorage 读取已保存的时区列表，保证类型为 string[]
+  const [zoneList, setZoneList] = useState<string[]>(() => {
     const saved = localStorage.getItem('tz-zones');
     try {
-      return saved ? JSON.parse(saved) : ['Asia/Shanghai'];
+      return saved ? JSON.parse(saved) as string[] : ['Asia/Shanghai'];
     } catch {
       return ['Asia/Shanghai'];
     }
   });
-  const [selectedZone, setSelectedZone] = useState(null);
 
-  // 每当 zoneList 变化时，同步到 localStorage
+  // 当前选中的时区 ID，或 null
+  const [selectedZone, setSelectedZone] = useState<string | null>(null);
+
+  // 同步到 localStorage
   useEffect(() => {
     localStorage.setItem('tz-zones', JSON.stringify(zoneList));
   }, [zoneList]);
 
-  // 点击热门城市时添加到列表
-  const handleCityClick = (zoneId) => {
+  // 点击热门城市或地图标记时调用
+  const handleSelectZone = (zoneId: string) => {
     setSelectedZone(zoneId);
-    setZoneList((prev) =>
-      prev.includes(zoneId) ? prev : [...prev, zoneId]
-    );
+    setZoneList(prev => (prev.includes(zoneId) ? prev : [...prev, zoneId]));
   };
 
   return (
     <div className="min-h-screen bg-slate-900 text-gray-100">
-      {/* 世界地图 全屏 */}
+      {/* 世界地图，全屏 */}
       <div className="w-full h-screen">
-        <WorldMap zones={zoneList} onSelectZone={setSelectedZone} />
+        <WorldMap zones={zoneList} onSelectZone={handleSelectZone} />
       </div>
 
       {/* 下方功能区 */}
@@ -55,11 +55,11 @@ function App() {
 
         {/* 热门城市网格 */}
         <div className="mb-8">
-          <PopularCityGrid onCityClick={handleCityClick} />
+          <PopularCityGrid onCityClick={handleSelectZone} />
         </div>
       </div>
     </div>
   );
-}
+};
 
 export default App;
