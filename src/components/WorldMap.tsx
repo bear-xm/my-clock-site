@@ -19,8 +19,10 @@ interface WorldMapProps {
 const WorldMap: React.FC<WorldMapProps> = ({ onSelectZone, zones }) => {
   const [features, setFeatures] = useState<any[]>([]);
   const [now, setNow] = useState<Date>(new Date());
+
   const viewWidth = 800;
   const viewHeight = 400;
+
   const projection = geoMercator()
     .scale(100)
     .center([0, 20])
@@ -54,17 +56,17 @@ const WorldMap: React.FC<WorldMapProps> = ({ onSelectZone, zones }) => {
 
   const labelOffsets: Record<string, number> = {};
   zonePoints.forEach((pt, i) => {
-    let overlap = 0;
+    let overlapCount = 0;
     for (let j = 0; j < i; j++) {
       const prev = zonePoints[j];
       if (
         Math.abs(pt.x - prev.x) < thresholdPx &&
         Math.abs(pt.y - prev.y) < thresholdPx
       ) {
-        overlap++;
+        overlapCount++;
       }
     }
-    labelOffsets[pt.zone] = baseOffset - overlap * deltaY;
+    labelOffsets[pt.zone] = baseOffset - overlapCount * deltaY;
   });
 
   return (
@@ -106,17 +108,17 @@ const WorldMap: React.FC<WorldMapProps> = ({ onSelectZone, zones }) => {
               style={{ cursor: 'pointer' }}
             >
               <circle r={2} fill="#22d3ee" stroke="#fff" strokeWidth={1} />
-              <g transform={`translate(-16, ${offsetY})`}>
+              <g transform={`translate(-20, ${offsetY})`}>
                 <rect
-                  width={32}
-                  height={20}
-                  rx={3}
+                  width={40}
+                  height={28}
+                  rx={4}
                   fill="#0f172a"
                   opacity={0.88}
                 />
                 <text
-                  x={16}
-                  y={6}
+                  x={20}
+                  y={8}
                   textAnchor="middle"
                   dominantBaseline="middle"
                   className="text-sm sm:text-base font-semibold fill-cyan-300"
@@ -125,8 +127,8 @@ const WorldMap: React.FC<WorldMapProps> = ({ onSelectZone, zones }) => {
                   {name}
                 </text>
                 <text
-                  x={16}
-                  y={14}
+                  x={20}
+                  y={20}
                   textAnchor="middle"
                   dominantBaseline="middle"
                   className="text-sm sm:text-base fill-gray-300"
