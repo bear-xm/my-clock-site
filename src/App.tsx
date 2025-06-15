@@ -1,12 +1,13 @@
-// src/App.tsx
+// src/App.js
 import React, { useState, useEffect } from 'react';
 import Clock from './components/Clock';
 import TimeZoneClockList from './components/TimeZoneClockList';
 import WorldMap from './components/WorldMap';
 import PopularCityGrid from './components/PopularCityGrid';
 
-const App: React.FC = () => {
-  const [zoneList, setZoneList] = useState<string[]>(() => {
+function App() {
+  // 从 localStorage 读取已保存的时区列表
+  const [zoneList, setZoneList] = useState(() => {
     const saved = localStorage.getItem('tz-zones');
     try {
       return saved ? JSON.parse(saved) : ['Asia/Shanghai'];
@@ -14,22 +15,24 @@ const App: React.FC = () => {
       return ['Asia/Shanghai'];
     }
   });
-  const [selectedZone, setSelectedZone] = useState<string | null>(null);
+  const [selectedZone, setSelectedZone] = useState(null);
 
+  // 每当 zoneList 变化时，同步到 localStorage
   useEffect(() => {
     localStorage.setItem('tz-zones', JSON.stringify(zoneList));
   }, [zoneList]);
 
-  const handleCityClick = (zoneId: string) => {
+  // 点击热门城市时添加到列表
+  const handleCityClick = (zoneId) => {
     setSelectedZone(zoneId);
-    setZoneList(prev =>
+    setZoneList((prev) =>
       prev.includes(zoneId) ? prev : [...prev, zoneId]
     );
   };
 
   return (
     <div className="min-h-screen bg-slate-900 text-gray-100">
-      {/* 地图全屏 */}
+      {/* 世界地图 全屏 */}
       <div className="w-full h-screen">
         <WorldMap zones={zoneList} onSelectZone={setSelectedZone} />
       </div>
@@ -41,7 +44,7 @@ const App: React.FC = () => {
           <Clock />
         </div>
 
-        {/* 多时区列表 */}
+        {/* 多时区时钟列表 */}
         <div className="mb-8">
           <TimeZoneClockList
             selectedZone={selectedZone}
@@ -57,6 +60,6 @@ const App: React.FC = () => {
       </div>
     </div>
   );
-};
+}
 
 export default App;
