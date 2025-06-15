@@ -3,7 +3,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* 强制暗色主题 */
+/* 全站暗色变量 */
 :root {
   --bg: #1a202c;
   --text: #edf2f7;

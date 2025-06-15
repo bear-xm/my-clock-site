@@ -6,7 +6,6 @@ import WorldMap from './components/WorldMap';
 import PopularCityGrid from './components/PopularCityGrid';
 
 const App: React.FC = () => {
-  // 多时区列表的本地存储
   const [zoneList, setZoneList] = useState<string[]>(() => {
     const saved = localStorage.getItem('tz-zones');
     try {
@@ -27,6 +26,7 @@ const App: React.FC = () => {
   };
 
   return (
+    // 直接用 slate-900 + text-gray-100，保证全站深色
     <div className="min-h-screen bg-slate-900 text-gray-100">
       {/* 地图全屏 */}
       <div className="w-full h-screen">
