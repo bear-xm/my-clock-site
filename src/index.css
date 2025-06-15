@@ -3,15 +3,11 @@
 @tailwind components;
 @tailwind utilities;
 
-/* 基准字体放大到 16px，保证移动端默认 text-base 足够大 */
-html {
-  font-size: 16px;
-}
-
+/* 统一暗色主题变量 */
 :root {
-  --bg: #f7fafc;
-  --text: #2d3748;
-  --primary: #3182ce;
+  --bg: #1a202c;    /* 背景色 */
+  --text: #edf2f7;  /* 文字色 */
+  --primary: #63b3ed;
 }
 
 html,
@@ -20,7 +16,8 @@ body {
   color: var(--text);
 }
 
-/* 自定义辅助类 */
+/* Tailwind 里不再使用 dark: 前缀，所有样式都直接写暗色主题 */
+/* 辅助类 */
 .bg-primary {
   background-color: var(--primary) !important;
 }
