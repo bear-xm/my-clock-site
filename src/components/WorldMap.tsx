@@ -56,17 +56,18 @@ const WorldMap: React.FC<WorldMapProps> = ({ onSelectZone, zones }) => {
 
   const labelOffsets: Record<string, number> = {};
   zonePoints.forEach((pt, i) => {
-    let overlap = 0;
+    let overlapCount = 0;
     for (let j = 0; j < i; j++) {
       const prev = zonePoints[j];
       if (
         Math.abs(pt.x - prev.x) < thresholdPx &&
         Math.abs(pt.y - prev.y) < thresholdPx
       ) {
-        overlap++;
+        overlapCount++;
       }
     }
-    labelOffsets[pt.zone] = baseOffset - overlap * deltaY;
+    // 这里用 pt.zone，而非未定义的 `pt`
+    labelOffsets[pt.zone] = baseOffset - overlapCount * deltaY;
   });
 
   return (
@@ -98,7 +99,8 @@ const WorldMap: React.FC<WorldMapProps> = ({ onSelectZone, zones }) => {
             timeZone: zone,
             hour12: false,
           });
-          const offsetY = labelOffsets[pt.zone] ?? baseOffset;
+          // 正确使用 zone 作为 key
+          const offsetY = labelOffsets[zone] ?? baseOffset;
 
           return (
             <Marker

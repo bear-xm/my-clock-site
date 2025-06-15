@@ -22,11 +22,12 @@ const App: React.FC = () => {
 
   const handleCityClick = (zoneId: string) => {
     setSelectedZone(zoneId);
-    setZoneList(prev => (prev.includes(zoneId) ? prev : [...prev, zoneId]));
+    setZoneList(prev =>
+      prev.includes(zoneId) ? prev : [...prev, zoneId]
+    );
   };
 
   return (
-    // 直接用 slate-900 + text-gray-100，保证全站深色
     <div className="min-h-screen bg-slate-900 text-gray-100">
       {/* 地图全屏 */}
       <div className="w-full h-screen">
