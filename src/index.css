@@ -3,10 +3,10 @@
 @tailwind components;
 @tailwind utilities;
 
-/* 统一暗色主题变量 */
+/* 强制暗色主题 */
 :root {
-  --bg: #1a202c;    /* 背景色 */
-  --text: #edf2f7;  /* 文字色 */
+  --bg: #1a202c;
+  --text: #edf2f7;
   --primary: #63b3ed;
 }
 
@@ -16,8 +16,7 @@ body {
   color: var(--text);
 }
 
-/* Tailwind 里不再使用 dark: 前缀，所有样式都直接写暗色主题 */
-/* 辅助类 */
+/* 常用辅助类 */
 .bg-primary {
   background-color: var(--primary) !important;
 }

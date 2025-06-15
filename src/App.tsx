@@ -6,7 +6,7 @@ import WorldMap from './components/WorldMap';
 import PopularCityGrid from './components/PopularCityGrid';
 
 const App: React.FC = () => {
-  // 读取/持久化多时区列表
+  // 多时区列表的本地存储
   const [zoneList, setZoneList] = useState<string[]>(() => {
     const saved = localStorage.getItem('tz-zones');
     try {
