@@ -1,6 +1,11 @@
 // src/components/WorldMap.tsx
 import React, { useEffect, useState } from 'react';
-import { ComposableMap, Geographies, Geography, Marker } from 'react-simple-maps';
+import {
+  ComposableMap,
+  Geographies,
+  Geography,
+  Marker,
+} from 'react-simple-maps';
 import { feature } from 'topojson-client';
 import { geoMercator } from 'd3-geo';
 import worldData from '../data/world-110m.json';
@@ -22,13 +27,16 @@ const WorldMap: React.FC<WorldMapProps> = ({ onSelectZone, zones }) => {
     .translate([viewWidth / 2, viewHeight / 2]);
 
   useEffect(() => {
-    const geo = feature(worldData as any, (worldData as any).objects.countries).features;
+    const geo = feature(
+      worldData as any,
+      (worldData as any).objects.countries
+    ).features;
     setFeatures(geo);
   }, []);
 
   useEffect(() => {
-    const id = setInterval(() => setNow(new Date()), 1000);
-    return () => clearInterval(id);
+    const timer = setInterval(() => setNow(new Date()), 1000);
+    return () => clearInterval(timer);
   }, []);
 
   const thresholdPx = 30;
@@ -49,7 +57,10 @@ const WorldMap: React.FC<WorldMapProps> = ({ onSelectZone, zones }) => {
     let overlap = 0;
     for (let j = 0; j < i; j++) {
       const prev = zonePoints[j];
-      if (Math.abs(pt.x - prev.x) < thresholdPx && Math.abs(pt.y - prev.y) < thresholdPx) {
+      if (
+        Math.abs(pt.x - prev.x) < thresholdPx &&
+        Math.abs(pt.y - prev.y) < thresholdPx
+      ) {
         overlap++;
       }
     }
@@ -79,7 +90,8 @@ const WorldMap: React.FC<WorldMapProps> = ({ onSelectZone, zones }) => {
 
         {zonePoints.map(({ zone, lng, lat }) => {
           const city = cityCoords[zone];
-          const name = city?.name ?? zone.split('/').pop()!.replace(/_/g, ' ');
+          const name =
+            city?.name ?? zone.split('/').pop()!.replace(/_/g, ' ');
           const timeStr = now.toLocaleTimeString(undefined, {
             timeZone: zone,
             hour12: false,
@@ -95,13 +107,19 @@ const WorldMap: React.FC<WorldMapProps> = ({ onSelectZone, zones }) => {
             >
               <circle r={2} fill="#22d3ee" stroke="#fff" strokeWidth={1} />
               <g transform={`translate(-16, ${offsetY})`}>
-                <rect width={32} height={20} rx={3} fill="#0f172a" opacity={0.88} />
+                <rect
+                  width={32}
+                  height={20}
+                  rx={3}
+                  fill="#0f172a"
+                  opacity={0.88}
+                />
                 <text
                   x={16}
                   y={6}
                   textAnchor="middle"
                   dominantBaseline="middle"
-                  className="text-base sm:text-lg font-semibold fill-cyan-300"
+                  className="text-sm sm:text-base font-semibold fill-cyan-300"
                   style={{ fontFamily: 'monospace', lineHeight: 1 }}
                 >
                   {name}
@@ -111,7 +129,7 @@ const WorldMap: React.FC<WorldMapProps> = ({ onSelectZone, zones }) => {
                   y={14}
                   textAnchor="middle"
                   dominantBaseline="middle"
-                  className="text-base sm:text-lg fill-gray-300"
+                  className="text-sm sm:text-base fill-gray-300"
                   style={{ fontFamily: 'monospace', lineHeight: 1 }}
                 >
                   {timeStr}

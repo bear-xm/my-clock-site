@@ -8,11 +8,65 @@ export interface TimeZoneClockListProps {
 }
 
 const staticNames: Record<string, string> = {
-  /* 完整映射，包括 'Europe/Tallinn': '马尔杜' */
+  // 亚洲
   'Asia/Tokyo': '东京',
-  /* ... 其他时区 ... */
+  'Asia/Shanghai': '上海',
+  'Asia/Beijing': '北京',
+  'Asia/Chongqing': '重庆',
+  'Asia/Harbin': '哈尔滨',
+  'Asia/Urumqi': '乌鲁木齐',
+  'Asia/Hong_Kong': '香港',
+  'Asia/Taipei': '台北',
+  'Asia/Seoul': '首尔',
+  'Asia/Kolkata': '孟买',
+  'Asia/Singapore': '新加坡',
+  'Asia/Kuala_Lumpur': '吉隆坡',
+  'Asia/Jakarta': '雅加达',
+  'Asia/Bangkok': '曼谷',
+  'Asia/Dubai': '迪拜',
+  'Asia/Tel_Aviv': '特拉维夫',
+  'Asia/Tehran': '德黑兰',
+
+  // 欧洲
+  'Europe/London': '伦敦',
+  'Europe/Paris': '巴黎',
+  'Europe/Berlin': '柏林',
+  'Europe/Moscow': '莫斯科',
+  'Europe/Rome': '罗马',
+  'Europe/Madrid': '马德里',
+  'Europe/Amsterdam': '阿姆斯特丹',
+  'Europe/Istanbul': '伊斯坦布尔',
+  'Europe/Zurich': '苏黎世',
+  'Europe/Stockholm': '斯德哥尔摩',
   'Europe/Tallinn': '马尔杜',
-  /* ... */
+
+  // 北美
+  'America/New_York': '纽约',
+  'America/Toronto': '多伦多',
+  'America/Vancouver': '温哥华',
+  'America/Chicago': '芝加哥',
+  'America/Denver': '丹佛',
+  'America/Los_Angeles': '洛杉矶',
+  'America/Mexico_City': '墨西哥城',
+  'America/Phoenix': '凤凰城',
+  'America/Anchorage': '安克雷奇',
+  'Pacific/Honolulu': '檀香山',
+
+  // 南美
+  'America/Sao_Paulo': '圣保罗',
+  'America/Argentina/Buenos_Aires': '布宜诺斯艾利斯',
+
+  // 非洲
+  'Africa/Cairo': '开罗',
+  'Africa/Johannesburg': '约翰内斯堡',
+  'Africa/Nairobi': '内罗毕',
+  'Africa/Lagos': '拉各斯',
+
+  // 大洋洲
+  'Australia/Sydney': '悉尼',
+  'Australia/Melbourne': '墨尔本',
+  'Pacific/Auckland': '奥克兰',
+  'Pacific/Fiji': '斐济',
 };
 
 function deriveCityLabel(zone: string): string {
@@ -36,7 +90,10 @@ const TimeZoneClockList: React.FC<TimeZoneClockListProps> = ({
 
   useEffect(() => {
     if (selectedZone && refs.current[selectedZone]) {
-      refs.current[selectedZone]!.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      refs.current[selectedZone]!.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+      });
     }
   }, [selectedZone]);
 
@@ -86,7 +143,10 @@ const TimeZoneClockList: React.FC<TimeZoneClockListProps> = ({
           添加
         </button>
       </div>
-      {error && <p className="text-red-500 dark:text-red-400 mb-2">{error}</p>}
+
+      {error && (
+        <p className="text-red-500 dark:text-red-400 mb-2">{error}</p>
+      )}
 
       <datalist id="tz-list">
         {Object.entries(staticNames).map(([id, name]) => (
@@ -102,13 +162,15 @@ const TimeZoneClockList: React.FC<TimeZoneClockListProps> = ({
               refs.current[z] = el;
             }}
             className={`flex justify-between items-center bg-gray-100 dark:bg-gray-700 p-3 rounded transition ${
-              selectedZone === z ? 'ring-2 ring-yellow-400 dark:ring-yellow-600' : ''
+              selectedZone === z
+                ? 'ring-2 ring-yellow-400 dark:ring-yellow-600'
+                : ''
             }`}
           >
-            <span className="text-base sm:text-lg text-gray-900 dark:text-gray-100">
+            <span className="text-sm sm:text-base text-gray-900 dark:text-gray-100">
               {deriveCityLabel(z)}
             </span>
-            <span className="text-base sm:text-lg text-gray-900 dark:text-gray-100">
+            <span className="text-sm sm:text-base text-gray-900 dark:text-gray-100">
               {now.toLocaleTimeString(undefined, { timeZone: z })}
             </span>
             <button
