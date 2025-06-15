@@ -98,7 +98,7 @@ const WorldMap: React.FC<WorldMapProps> = ({ onSelectZone, zones }) => {
             timeZone: zone,
             hour12: false,
           });
-          const offsetY = labelOffsets[zone] ?? baseOffset;
+          const offsetY = labelOffsets[pt.zone] ?? baseOffset;
 
           return (
             <Marker
@@ -121,7 +121,7 @@ const WorldMap: React.FC<WorldMapProps> = ({ onSelectZone, zones }) => {
                   y={12}
                   textAnchor="middle"
                   dominantBaseline="middle"
-                  className="text-sm sm:text-base font-semibold fill-cyan-300"
+                  className="text-xs sm:text-sm font-semibold fill-cyan-300"
                   style={{ fontFamily: 'monospace', lineHeight: 1 }}
                 >
                   {name}
