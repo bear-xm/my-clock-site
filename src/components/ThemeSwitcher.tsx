@@ -1,6 +1,35 @@
 import React from 'react';
-import ThemePicker from './ThemePicker';
+import { useTheme, themes } from '../contexts/ThemeContext';
 
-const ThemeSwitcher: React.FC = () => <ThemePicker />;
+type ThemeName = keyof typeof themes;
+
+const ThemeSwitcher: React.FC = () => {
+  const { themeName, setThemeName } = useTheme();
+
+  return (
+    <div className="flex items-center space-x-2">
+      <label htmlFor="theme-select" className="text-gray-900 dark:text-gray-100">
+        主题
+      </label>
+      <select
+        id="theme-select"
+        value={themeName}
+        onChange={e => setThemeName(e.target.value as ThemeName)}
+        className="
+          p-2 border rounded 
+          bg-white dark:bg-gray-800 
+          text-gray-900 dark:text-gray-100 
+          focus:outline-none focus:ring-2 focus:ring-primary
+        "
+      >
+        {Object.keys(themes).map(t => (
+          <option key={t} value={t}>
+            {t}
+          </option>
+        ))}
+      </select>
+    </div>
+  );
+};
 
 export default ThemeSwitcher;

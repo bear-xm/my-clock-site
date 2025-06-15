@@ -1,4 +1,3 @@
-// src/App.tsx
 import React, { useState, useEffect } from 'react';
 import { ThemeProvider } from './contexts/ThemeContext';
 import ThemeSwitcher from './components/ThemeSwitcher';
@@ -7,10 +6,14 @@ import TimeZoneClockList from './components/TimeZoneClockList';
 import WorldMap from './components/WorldMap';
 import PopularCityGrid from './components/PopularCityGrid';
 
-function App() {
+const App: React.FC = () => {
   const [zoneList, setZoneList] = useState<string[]>(() => {
     const saved = localStorage.getItem('tz-zones');
-    return saved ? JSON.parse(saved) : ['Asia/Shanghai'];
+    try {
+      return saved ? JSON.parse(saved) : ['Asia/Shanghai'];
+    } catch {
+      return ['Asia/Shanghai'];
+    }
   });
   const [selectedZone, setSelectedZone] = useState<string | null>(null);
 
@@ -26,15 +29,13 @@ function App() {
   return (
     <ThemeProvider>
       <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
-        {/* 地图全屏 */}
+        {/* 地图全屏显示 */}
         <div className="w-full h-screen">
           <WorldMap zones={zoneList} onSelectZone={setSelectedZone} />
         </div>
 
         {/* 下方功能区 */}
         <div className="w-full max-w-screen-xl mx-auto px-4 py-8">
-          {/* 顶部不再显示主题切换 */}
-
           {/* 主时钟 */}
           <div className="text-center mb-8">
             <Clock />
@@ -54,7 +55,7 @@ function App() {
             <PopularCityGrid onCityClick={handleCityClick} />
           </div>
 
-          {/* 将黑暗模式切换按钮移到最下面 */}
+          {/* 底部主题切换 */}
           <div className="flex justify-center mt-8">
             <ThemeSwitcher />
           </div>
@@ -62,6 +63,6 @@ function App() {
       </div>
     </ThemeProvider>
   );
-}
+};
 
 export default App;
