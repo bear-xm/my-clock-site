@@ -20,15 +20,15 @@ const WorldMap: React.FC<WorldMapProps> = ({ onSelectZone, zones }) => {
   const [features, setFeatures] = useState<any[]>([]);
   const [now, setNow] = useState<Date>(new Date());
 
-  // 画布尺寸（为底部标签预留空间）
+  // 画布尺寸，为底部标签留足空间
   const viewWidth = 800;
   const viewHeight = 450;
 
-  // 标签尺寸与文字行位置
+  // 标签框尺寸与文字行坐标
   const rectWidth = 60;
-  const rectHeight = 44;
-  const nameY = 14;
-  const timeY = 28;
+  const rectHeight = 50;   // 框高增大以容纳更大行距
+  const nameY = 14;        // 城市名行
+  const timeY = 36;        // 时间行，大幅下移
 
   // 地理投影
   const projection = geoMercator()
@@ -36,7 +36,7 @@ const WorldMap: React.FC<WorldMapProps> = ({ onSelectZone, zones }) => {
     .center([0, 20])
     .translate([viewWidth / 2, viewHeight / 2]);
 
-  // 加载世界地图数据
+  // 加载世界地图地理数据
   useEffect(() => {
     const geo = feature(
       worldData as any,
@@ -45,16 +45,16 @@ const WorldMap: React.FC<WorldMapProps> = ({ onSelectZone, zones }) => {
     setFeatures(geo);
   }, []);
 
-  // 每秒更新时间
+  // 实时更新时间
   useEffect(() => {
     const id = setInterval(() => setNow(new Date()), 1000);
     return () => clearInterval(id);
   }, []);
 
-  // 重叠检测 & 标签偏移参数
+  // 重叠检测 & 偏移参数
   const thresholdPx = 40;
-  const baseOffset = -24;
-  const deltaY = 20;
+  const baseOffset = -26;
+  const deltaY = 22;
 
   // 计算每个时区的屏幕坐标
   const zonePoints = zones.map((zone) => {
@@ -65,7 +65,7 @@ const WorldMap: React.FC<WorldMapProps> = ({ onSelectZone, zones }) => {
     return { zone, lng, lat, x, y };
   });
 
-  // 计算并限制每个标签的纵向偏移，避免重叠和超出边界
+  // 计算标签的纵向偏移并做边界检测
   const labelOffsets: Record<string, number> = {};
   zonePoints.forEach((pt, i) => {
     let overlap = 0;
@@ -80,11 +80,11 @@ const WorldMap: React.FC<WorldMapProps> = ({ onSelectZone, zones }) => {
     }
     let yOffset = baseOffset - overlap * deltaY;
 
-    // 顶部边界
+    // 上边界
     if (pt.y + yOffset < 0) {
       yOffset = -pt.y + 2;
     }
-    // 底部边界
+    // 下边界
     const bottomY = pt.y + yOffset + rectHeight;
     if (bottomY > viewHeight) {
       yOffset -= bottomY - viewHeight + 2;
@@ -102,7 +102,7 @@ const WorldMap: React.FC<WorldMapProps> = ({ onSelectZone, zones }) => {
         preserveAspectRatio="xMidYMid meet"
         className="w-full h-full"
       >
-        {/* 绘制地理要素 */}
+        {/* 地图底图 */}
         <Geographies geography={features}>
           {({ geographies }: { geographies: any[] }) =>
             geographies.map((geo: any) => (
@@ -115,7 +115,7 @@ const WorldMap: React.FC<WorldMapProps> = ({ onSelectZone, zones }) => {
           }
         </Geographies>
 
-        {/* 绘制每个时区的标记和标签 */}
+        {/* 绘制时区标签 */}
         {zonePoints.map(({ zone, lng, lat }) => {
           const city = cityCoords[zone];
           const name =
@@ -135,8 +135,7 @@ const WorldMap: React.FC<WorldMapProps> = ({ onSelectZone, zones }) => {
             >
               {/* 圆点 */}
               <circle r={3} fill="#22d3ee" stroke="#fff" strokeWidth={1} />
-
-              {/* 标签 构造 */}
+              {/* 标签 */}
               <g transform={`translate(${-rectWidth / 2}, ${offsetY})`}>
                 <rect
                   width={rectWidth}
@@ -145,7 +144,7 @@ const WorldMap: React.FC<WorldMapProps> = ({ onSelectZone, zones }) => {
                   fill="#0f172a"
                   opacity={0.88}
                 />
-                {/* 城市名称 */}
+                {/* 城市名 */}
                 <text
                   x={rectWidth / 2}
                   y={nameY}
@@ -156,7 +155,7 @@ const WorldMap: React.FC<WorldMapProps> = ({ onSelectZone, zones }) => {
                 >
                   {name}
                 </text>
-                {/* 时间（移动端增大字体） */}
+                {/* 时间 */}
                 <text
                   x={rectWidth / 2}
                   y={timeY}
