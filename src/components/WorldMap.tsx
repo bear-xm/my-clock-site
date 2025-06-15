@@ -42,8 +42,8 @@ const WorldMap: React.FC<WorldMapProps> = ({ onSelectZone, zones }) => {
 
   // 重叠检测与偏移参数
   const thresholdPx = 40;
-  const baseOffset = -28;
-  const deltaY = 22;
+  const baseOffset = -30;
+  const deltaY = 24;
 
   const zonePoints = zones.map((zone) => {
     const city = cityCoords[zone];
@@ -56,18 +56,17 @@ const WorldMap: React.FC<WorldMapProps> = ({ onSelectZone, zones }) => {
 
   const labelOffsets: Record<string, number> = {};
   zonePoints.forEach((pt, i) => {
-    let overlapCount = 0;
+    let overlap = 0;
     for (let j = 0; j < i; j++) {
       const prev = zonePoints[j];
       if (
         Math.abs(pt.x - prev.x) < thresholdPx &&
         Math.abs(pt.y - prev.y) < thresholdPx
       ) {
-        overlapCount++;
+        overlap++;
       }
     }
-    // 这里用 pt.zone，而非未定义的 `pt`
-    labelOffsets[pt.zone] = baseOffset - overlapCount * deltaY;
+    labelOffsets[pt.zone] = baseOffset - overlap * deltaY;
   });
 
   return (
@@ -99,7 +98,6 @@ const WorldMap: React.FC<WorldMapProps> = ({ onSelectZone, zones }) => {
             timeZone: zone,
             hour12: false,
           });
-          // 正确使用 zone 作为 key
           const offsetY = labelOffsets[zone] ?? baseOffset;
 
           return (
@@ -111,13 +109,15 @@ const WorldMap: React.FC<WorldMapProps> = ({ onSelectZone, zones }) => {
             >
               <circle r={3} fill="#22d3ee" stroke="#fff" strokeWidth={1} />
               <g transform={`translate(-30, ${offsetY})`}>
+                {/* 增大标签框高度以容纳更大行距 */}
                 <rect
                   width={60}
-                  height={36}
+                  height={44}
                   rx={4}
                   fill="#0f172a"
                   opacity={0.88}
                 />
+                {/* 城市名行 */}
                 <text
                   x={30}
                   y={12}
@@ -128,9 +128,10 @@ const WorldMap: React.FC<WorldMapProps> = ({ onSelectZone, zones }) => {
                 >
                   {name}
                 </text>
+                {/* 时间行：下移至 y=32 */}
                 <text
                   x={30}
-                  y={24}
+                  y={32}
                   textAnchor="middle"
                   dominantBaseline="middle"
                   className="text-sm sm:text-base fill-gray-300"
