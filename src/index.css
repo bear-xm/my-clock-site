@@ -3,13 +3,24 @@
 @tailwind components;
 @tailwind utilities;
 
+/* 基准字体放大到 16px，保证移动端默认 text-base 足够大 */
+html {
+  font-size: 16px;
+}
+
 :root {
   --bg: #f7fafc;
   --text: #2d3748;
   --primary: #3182ce;
 }
 
-html, body {
+html,
+body {
   background-color: var(--bg);
   color: var(--text);
+}
+
+/* 自定义辅助类 */
+.bg-primary {
+  background-color: var(--primary) !important;
 }
