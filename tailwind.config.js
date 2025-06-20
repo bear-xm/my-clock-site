@@ -1,7 +1,7 @@
 // tailwind.config.js
 module.exports = {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
-  // 删除 darkMode，此处不配置
+  darkMode: 'class',  // 开启 class 模式暗色
   theme: {
     extend: {},
   },
