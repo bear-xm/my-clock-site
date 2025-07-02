@@ -11,6 +11,7 @@ const popularZones = [
     'Asia/Dubai',
     'Australia/Sydney',
     'America/Sao_Paulo',
+    'Africa/Tripoli',
 ];
 const PopularCityGrid = ({ onCityClick }) => {
     const [now, setNow] = useState(new Date());
