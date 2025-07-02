@@ -34,6 +34,7 @@ export const cityCoords = {
     // 非洲
     'Africa/Cairo': { name: '开罗', coordinates: [31.2357, 30.0444] },
     'Africa/Johannesburg': { name: '约翰内斯堡', coordinates: [28.0473, -26.2041] },
+    'Africa/Tripoli':  { name: '利比亚', coordinates: [32.8872, 13.1914] },
     // 大洋洲
     'Australia/Sydney': { name: '悉尼', coordinates: [151.2093, -33.8688] },
     'Australia/Melbourne': { name: '墨尔本', coordinates: [144.9631, -37.8136] },
