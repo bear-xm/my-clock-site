@@ -16,6 +16,7 @@ const popularZones: string[] = [
   'Australia/Sydney',
   'America/Sao_Paulo',
   'Africa/Tripoli',
+  'Asia/Dubai',
 ];
 
 const PopularCityGrid: React.FC<PopularCityGridProps> = ({ onCityClick }) => {
